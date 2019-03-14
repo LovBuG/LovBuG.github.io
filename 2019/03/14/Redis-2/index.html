@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="Redis 使用场景： 缓存 排行榜系统（列表和有序集合） 计数器应用 社交网络（点赞等） 消息队列系统（发布订阅功能和阻塞队列功能呢）  不适合： 存储大数据（内存珍贵）和冷数据（操作内存快）  为什么 Redis 使用单线程模型还能这么快 纯内存访问 非阻塞 IO，Redis 使用 epoll 作为 IO 多路复用技术的实现，再使用 Redis 自身的事件处理模型将 epoll 中的连接、读写">
+<meta name="description" content="字符串 字符串类型的值可以是字符串、数字和二进制，但是值的最大值不能超过512 MB  相关命令  批量设置和批量获取 mset 和 mget。批量处理可以提高处理效率但是批量处理数量太多可能造成 Redis 阻塞或网络阻塞 append key value 向字符串尾部追加值 strlen key 返回字符串长度 getset key value 设置并返回原来的值 getrange key s">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis(1)">
-<meta property="og:url" content="http://yoursite.com/2019/03/14/Redis-1/index.html">
+<meta property="og:title" content="Redis(2)">
+<meta property="og:url" content="http://yoursite.com/2019/03/14/Redis-2/index.html">
 <meta property="og:site_name" content="Azee">
-<meta property="og:description" content="Redis 使用场景： 缓存 排行榜系统（列表和有序集合） 计数器应用 社交网络（点赞等） 消息队列系统（发布订阅功能和阻塞队列功能呢）  不适合： 存储大数据（内存珍贵）和冷数据（操作内存快）  为什么 Redis 使用单线程模型还能这么快 纯内存访问 非阻塞 IO，Redis 使用 epoll 作为 IO 多路复用技术的实现，再使用 Redis 自身的事件处理模型将 epoll 中的连接、读写">
+<meta property="og:description" content="字符串 字符串类型的值可以是字符串、数字和二进制，但是值的最大值不能超过512 MB  相关命令  批量设置和批量获取 mset 和 mget。批量处理可以提高处理效率但是批量处理数量太多可能造成 Redis 阻塞或网络阻塞 append key value 向字符串尾部追加值 strlen key 返回字符串长度 getset key value 设置并返回原来的值 getrange key s">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-03-14T13:11:03.182Z">
+<meta property="og:updated_time" content="2019-03-14T14:20:15.048Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis(1)">
-<meta name="twitter:description" content="Redis 使用场景： 缓存 排行榜系统（列表和有序集合） 计数器应用 社交网络（点赞等） 消息队列系统（发布订阅功能和阻塞队列功能呢）  不适合： 存储大数据（内存珍贵）和冷数据（操作内存快）  为什么 Redis 使用单线程模型还能这么快 纯内存访问 非阻塞 IO，Redis 使用 epoll 作为 IO 多路复用技术的实现，再使用 Redis 自身的事件处理模型将 epoll 中的连接、读写">
+<meta name="twitter:title" content="Redis(2)">
+<meta name="twitter:description" content="字符串 字符串类型的值可以是字符串、数字和二进制，但是值的最大值不能超过512 MB  相关命令  批量设置和批量获取 mset 和 mget。批量处理可以提高处理效率但是批量处理数量太多可能造成 Redis 阻塞或网络阻塞 append key value 向字符串尾部追加值 strlen key 返回字符串长度 getset key value 设置并返回原来的值 getrange key s">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/14/Redis-1/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/14/Redis-2/">
 
 
 
 
 
-  <title>Redis(1) | Azee</title>
+  <title>Redis(2) | Azee</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/14/Redis-1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/14/Redis-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Azee">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis(1)</h1>
+          <h1 class="post-title" itemprop="name headline">Redis(2)</h1>
         
 
         <div class="post-meta">
@@ -261,7 +261,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-14T20:31:51+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-14T21:00:32+08:00">
                 2019-03-14
               </time>
             
@@ -299,21 +299,87 @@
       
 
       
-        <h4 id="Redis-使用场景："><a href="#Redis-使用场景：" class="headerlink" title="Redis 使用场景："></a>Redis 使用场景：</h4><ul>
-<li>缓存</li>
-<li>排行榜系统（列表和有序集合）</li>
-<li>计数器应用</li>
-<li>社交网络（点赞等）</li>
-<li>消息队列系统（发布订阅功能和阻塞队列功能呢）</li>
+        <h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><ul>
+<li><p>字符串类型的值可以是字符串、数字和二进制，但是值的最大值不能超过512 MB</p>
+</li>
+<li><p>相关命令</p>
+<ul>
+<li>批量设置和批量获取 mset 和 mget。批量处理可以提高处理效率但是批量处理数量太多可能造成 Redis 阻塞或网络阻塞</li>
+<li>append key value 向字符串尾部追加值</li>
+<li>strlen key 返回字符串长度</li>
+<li>getset key value 设置并返回原来的值</li>
+<li>getrange key start end </li>
 </ul>
-<h4 id="不适合："><a href="#不适合：" class="headerlink" title="不适合："></a>不适合：</h4><ul>
-<li>存储大数据（内存珍贵）和冷数据（操作内存快）</li>
+</li>
+<li><p>内部编码</p>
+<ul>
+<li>int :8字节的长整形</li>
+<li>embstr：小于等于39个字节的字符串 </li>
+<li>raw：大于39个字节的字符串</li>
 </ul>
-<h4 id="为什么-Redis-使用单线程模型还能这么快"><a href="#为什么-Redis-使用单线程模型还能这么快" class="headerlink" title="为什么 Redis 使用单线程模型还能这么快"></a>为什么 Redis 使用单线程模型还能这么快</h4><ul>
-<li>纯内存访问</li>
-<li>非阻塞 IO，Redis 使用 <a href="https://baike.baidu.com/item/epoll/10738144?fr=aladdin" target="_blank" rel="noopener">epoll</a> 作为 IO 多路复用技术的实现，再使用 Redis 自身的事件处理模型将 epoll 中的连接、读写、关闭都转为时间，不再网络 IO 上浪费过多时间。</li>
-<li>单线程避免了线程切换和竞态产生的消耗</li>
+</li>
+<li><p>应用场景</p>
+<ul>
+<li><p>缓存</p>
+</li>
+<li><p>计数</p>
+</li>
+<li><p>共享 session </p>
+</li>
+<li><p>限速</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">phoneNum = <span class="string">"138XXXXXXXX"</span>;</span><br><span class="line">key = <span class="string">"msg:limit:"</span>+phoneNUm;</span><br><span class="line">isExist = redis.set(key,<span class="number">1</span>,<span class="string">"EX 60"</span>,<span class="string">"NX"</span>);</span><br><span class="line"><span class="keyword">if</span>(isExist!=<span class="keyword">null</span>||redis.incr(key)&lt;=<span class="number">5</span>)&#123;</span><br><span class="line">    <span class="comment">//pass</span></span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="comment">//limit</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
+</li>
+</ul>
+<h4 id="哈希"><a href="#哈希" class="headerlink" title="哈希"></a>哈希</h4><ul>
+<li>命令<ul>
+<li>hset hget hdel hlen</li>
+<li>hmset 和 hmget</li>
+<li>hexists</li>
+<li>hkeys  返回指定哈希键所有的field</li>
+<li>hvals 获取所有的value</li>
+<li>hincrby 和 hincrbyfloat</li>
+</ul>
+</li>
+<li>内部编码<ul>
+<li>ziplist</li>
+<li>hashtable</li>
+</ul>
+</li>
+<li>使用场景： 存储用户信息</li>
+</ul>
+<h4 id="列表（存储2-32-1个元素，可以充当栈和双端队列）"><a href="#列表（存储2-32-1个元素，可以充当栈和双端队列）" class="headerlink" title="列表（存储2^32 - 1个元素，可以充当栈和双端队列）"></a>列表（存储2^32 - 1个元素，可以充当栈和双端队列）</h4><ul>
+<li>命令<ul>
+<li>lpush rpush lpop rpop</li>
+<li>linsert key before|after pivot value 向某个元素前或后插入元素</li>
+<li>lrange key start end 获取指定范围内的元素列表。从左到右为0到N-1，从右到左为-1到-N</li>
+<li>lindex key value 获取指定索引下标的元素</li>
+<li>llen key</li>
+<li>lrem key count value 从列表中删除等于value的元素<ul>
+<li>count&gt;0 从左到右</li>
+<li>count&lt;0 从右到左</li>
+<li>count=0 删除所有</li>
+</ul>
+</li>
+<li>lset key index newValue</li>
+</ul>
+</li>
+<li>内部编码<ul>
+<li>ziplist</li>
+<li>linkedlist</li>
+</ul>
+</li>
+<li>使用场景<ul>
+<li>文章列表</li>
+<li>lpush + lpop = stack</li>
+<li>lpush + rpop = queue</li>
+<li>lpush + ltrim = capped collection</li>
+<li>lpush + brpop = message queue</li>
+</ul>
+</li>
+</ul>
+<p>字符串类型的值可以是字符串（简单的字符串和 JSON 、XML）、数字和二进制（图片、视频），但是</p>
 
       
     </div>
@@ -338,15 +404,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/03/14/Redis-1/" rel="next" title="Redis(1)">
+                <i class="fa fa-chevron-left"></i> Redis(1)
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/14/Redis-2/" rel="prev" title="Redis(2)">
-                Redis(2) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -460,7 +526,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-使用场景："><span class="nav-number">1.</span> <span class="nav-text">Redis 使用场景：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不适合："><span class="nav-number">2.</span> <span class="nav-text">不适合：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么-Redis-使用单线程模型还能这么快"><span class="nav-number">3.</span> <span class="nav-text">为什么 Redis 使用单线程模型还能这么快</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串"><span class="nav-number">1.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希"><span class="nav-number">2.</span> <span class="nav-text">哈希</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列表（存储2-32-1个元素，可以充当栈和双端队列）"><span class="nav-number">3.</span> <span class="nav-text">列表（存储2^32 - 1个元素，可以充当栈和双端队列）</span></a></li></ol></div>
             
 
           </div>
